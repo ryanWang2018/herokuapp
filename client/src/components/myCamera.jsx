@@ -9,18 +9,30 @@ import twoHandUp from "./pic/stick01.png";
 import dap from "./pic/stick02.png";
 import oneHandUp from "./pic/stick03.png";
 import twoHandDown from "./pic/stick04.png";
+import bothLeg from "./pic/bothLeg.png";
+import leftLeg from "./pic/leftLeg.png";
+import rightLeg from "./pic/rightLeg.png";
 
 tf.ENV.set("WEBGL_PACK", false);
 class MyCamera extends Component {
   constructor(props) {
     super(props);
     // need to modify
-    this.imgArray = [twoHandUp, dap, oneHandUp, twoHandDown];
+    this.imgArray = [
+      twoHandUp,
+      dap,
+      oneHandUp,
+      twoHandDown,
+      bothLeg,
+      leftLeg,
+      rightLeg
+    ];
     // need to modify
-    this.imgArray_len = 4;
+    this.imgArray_len = 7;
 
     this.state = {
-      curr_img_index: 0
+      curr_img_index: 0,
+      countDown: 3
     };
   }
 
@@ -291,7 +303,10 @@ class MyCamera extends Component {
       this.isTwoHandUp,
       this.isDap,
       this.isOneHandUp,
-      this.isTwoHandDown
+      this.isTwoHandDown,
+      this.isbothlegbend,
+      this.isLeftLegBend,
+      this.isrightlegbend
     ];
 
     if (pose.score <= 0.7) {
@@ -351,11 +366,16 @@ class MyCamera extends Component {
         this.setState({ curr_img_index: curr_img });
       }
       if (this.props.timer.timeleft % 4 === 2) {
+        this.setState({ countDown: 1 });
         this.takePhoto()
           .then()
           .catch(e => {
             console.log(e);
           });
+      } else if (this.props.timer.timeleft % 4 === 0) {
+        this.setState({ countDown: 3 });
+      } else if (this.props.timer.timeleft % 4 === 3) {
+        this.setState({ countDown: 2 });
       }
     }
   }
@@ -364,14 +384,17 @@ class MyCamera extends Component {
     let load_curr = this.imgArray[this.state.curr_img_index];
 
     return (
-      <div className="d-flex flex-row">
-        <img
-          id="picture"
-          height="200"
-          width="200"
-          src={load_curr}
-          alt="gesture"
-        />
+      <div className="d-flex flex-column">
+        <div className="d-flex flex-row">
+          <h1> {this.state.countDown} </h1>
+          <img
+            id="picture"
+            height="200"
+            width="200"
+            src={load_curr}
+            alt="gesture"
+          />
+        </div>
         <video id="video" className="p-2" width="500" height="500" autoPlay />
       </div>
     );
