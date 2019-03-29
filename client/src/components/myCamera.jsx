@@ -386,15 +386,8 @@ class MyCamera extends Component {
           width="1010"
           height="1010"
         >
-          <video
-            id="video"
-            className="p-2"
-            width="1000"
-            height="1000"
-            autoPlay
-          />
+          <video id="video" className="p-2" width="400" height="400" autoPlay />
         </div>
-
         <img
           id="picture"
           height="250"
