@@ -116,7 +116,11 @@ router.get("/rooms/", isAuthenticated, function(req, res, next) {
     .exec(function(err, rooms) {
       if (err) return res.status(500).end(err);
 
-      return res.json(rooms);
+      Rooms.find({})
+        .count()
+        .exec(function(err, total) {
+          return res.json({ rooms, total });
+        });
     });
 });
 
@@ -126,11 +130,6 @@ router.post("/room/", isAuthenticated, function(req, res) {
   let users = [];
   Rooms.insertMany({ owner: owner, users: users }, function(err, insertedRoom) {
     if (err) return res.status(500).end("Failed creating new room");
-    Rooms.find({})
-      .count()
-      .exec(function(err, total) {
-        return res.json({ rooms, total });
-      });
   });
 });
 
