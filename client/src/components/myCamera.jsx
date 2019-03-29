@@ -397,13 +397,13 @@ class MyCamera extends Component {
 
         <img
           id="picture"
-          height="150"
-          width="150"
-          style={{ position: "absolute", top: "1px", left: "200px" }}
+          height="250"
+          width="200"
+          style={{ position: "absolute", top: "1px", left: "300px" }}
           src={load_curr}
           alt="gesture"
         />
-        <h1 style={{ position: "absolute", top: "2px", left: "400px" }}>
+        <h1 style={{ position: "absolute", top: "2px", left: "500px" }}>
           {this.state.countDown}
         </h1>
       </div>

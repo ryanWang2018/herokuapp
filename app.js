@@ -130,6 +130,7 @@ router.post("/room/", isAuthenticated, function(req, res) {
   let users = [];
   Rooms.insertMany({ owner: owner, users: users }, function(err, insertedRoom) {
     if (err) return res.status(500).end("Failed creating new room");
+    return res.json(insertedRoom[0]);
   });
 });
 
