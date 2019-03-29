@@ -3,6 +3,9 @@ import Timer from "./timer.jsx";
 import Score from "./score.jsx";
 
 class Scores extends Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
     const scoreList = this.props.scoreList; // [{playerId: "", point:""}]
     const timer = this.props.timer; // {timeleft: 0}
