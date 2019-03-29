@@ -385,7 +385,18 @@ class MyCamera extends Component {
     let load_curr = this.imgArray[this.state.curr_img_index];
     return (
       <div>
-        <video id="video" className="p-2" width="1000" height="1000" autoPlay />
+        {/* <video
+          style={{ position: "absolute", top: "2px", left: "2px" }}
+          id="video"
+          className="p-2"
+          width="1000"
+          height="1000"
+          autoPlay
+        /> */}
+
+        <h1>
+          jehfkjehfkewjfnkjefnkejwfejkbfkjewbfkjewbfkjebfjkewbfewfkjbfkejbf
+        </h1>
 
         <img
           id="picture"
