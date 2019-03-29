@@ -359,43 +359,54 @@ class MyCamera extends Component {
     if (this.props.timer.timeleft !== prevProps.timer.timeleft) {
       let curr_img;
       if (
-        this.props.timer.timeleft % 4 === 0 &&
+        this.props.timer.timeleft % 5 === 0 &&
         this.props.timer.timeleft !== 60
       ) {
         curr_img = (this.state.curr_img_index + 1) % this.imgArray_len;
         this.setState({ curr_img_index: curr_img });
       }
-      if (this.props.timer.timeleft % 4 === 2) {
-        this.setState({ countDown: 1 });
+      if (this.props.timer.timeleft % 5 === 2) {
+        this.setState({ countDown: 0 });
         this.takePhoto()
           .then()
           .catch(e => {
             console.log(e);
           });
-      } else if (this.props.timer.timeleft % 4 === 0) {
+      } else if (this.props.timer.timeleft % 5 === 0) {
         this.setState({ countDown: 3 });
-      } else if (this.props.timer.timeleft % 4 === 3) {
+      } else if (this.props.timer.timeleft % 5 === 4) {
         this.setState({ countDown: 2 });
+      } else if (this.props.timer.timeleft % 5 === 3) {
+        this.setState({ countDown: 1 });
       }
     }
   }
-
   render() {
     let load_curr = this.imgArray[this.state.curr_img_index];
-
     return (
-      <div className="d-flex flex-column">
-        <div className="d-flex flex-row">
-          <h1> {this.state.countDown} </h1>
-          <img
-            id="picture"
-            height="200"
-            width="200"
-            src={load_curr}
-            alt="gesture"
-          />
+      <div>
+        <img
+          id="picture"
+          height="150"
+          width="150"
+          style={{ position: "absolute", top: "2px", left: "2px" }}
+          src={load_curr}
+          alt="gesture"
+        />
+        <div className="container">
+          <div className="column">
+            <div className="mx-auto">
+              <h1>{this.state.countDown}</h1>
+            </div>
+            <video
+              id="video"
+              className="p-2"
+              width="700"
+              height="700"
+              autoPlay
+            />
+          </div>
         </div>
-        <video id="video" className="p-2" width="500" height="500" autoPlay />
       </div>
     );
   }
