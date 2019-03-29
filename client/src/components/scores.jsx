@@ -9,8 +9,8 @@ class Scores extends Component {
     return (
       <div className="scorePanel">
         <div className="scoreHead">
-          <h2 className="socreText">Home</h2>
-          <h2 className="socreText">Guess</h2>
+          <h2 className="socreText">{scoreList[0].playerId}</h2>
+          <h2 className="socreText">{scoreList[1].playerId}</h2>
         </div>
         <div className="scoreBody">
           <div className="scoreLeft bodyItem">

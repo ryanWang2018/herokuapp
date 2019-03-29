@@ -367,11 +367,7 @@ class MyCamera extends Component {
       }
       if (this.props.timer.timeleft % 5 === 2) {
         this.setState({ countDown: 0 });
-        this.takePhoto()
-          .then()
-          .catch(e => {
-            console.log(e);
-          });
+        this.takePhoto();
       } else if (this.props.timer.timeleft % 5 === 0) {
         this.setState({ countDown: 3 });
       } else if (this.props.timer.timeleft % 5 === 4) {
@@ -403,11 +399,11 @@ class MyCamera extends Component {
           id="picture"
           height="150"
           width="150"
-          style={{ position: "absolute", top: "2px", left: "2px" }}
+          style={{ position: "absolute", top: "1px", left: "200px" }}
           src={load_curr}
           alt="gesture"
         />
-        <h1 style={{ position: "absolute", top: "2px", left: "200px" }}>
+        <h1 style={{ position: "absolute", top: "2px", left: "400px" }}>
           {this.state.countDown}
         </h1>
       </div>
