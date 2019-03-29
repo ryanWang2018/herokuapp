@@ -44,6 +44,8 @@ class PrepareRoom extends Component {
                       scoreList={this.state.playerList}
                       timer={this.state.timer}
                       emojiList={this.state.emojiList}
+                      height="1020"
+                      width="1020"
                     />
                   </div>
                 </div>
