@@ -1,0 +1,47 @@
+.scorePanel {
+  width: 300px;
+  height: 200px;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+  background-color: white;
+}
+
+.scoreHead {
+  border-radius: 1rem;
+  background-color: black;
+  height: 50px;
+  margin: 2px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.scoreBody {
+  border-radius: 1rem;
+  height: 150px;
+  margin: 2px;
+  display: flex;
+  background-color: black;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.bodyItem {
+  border-radius: 1rem;
+  order: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.socreText {
+  color: rgb(247, 239, 10);
+}
+
+.textElement {
+  padding: auto;
+  margin: auto;
+  color: rgb(245, 13, 33);
+}
