@@ -341,7 +341,7 @@ class MyCamera extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.timer !== prevProps.timer) {
+    if (this.props.timer.timeleft !== prevProps.timer.timeleft) {
       let curr_img;
       if (
         this.props.timer.timeleft % 4 === 0 &&
