@@ -4,6 +4,7 @@ import * as tf from "@tensorflow/tfjs";
 import * as math from "mathjs";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Cookies from "js-cookie";
+import Scores from "./scores.jsx";
 
 import twoHandUp from "./pic/stick01.png";
 import dap from "./pic/stick02.png";
