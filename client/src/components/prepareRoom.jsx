@@ -32,7 +32,6 @@ class PrepareRoom extends Component {
     if (start) {
       return (
         <div className="container sub-body">
-          <Scores scoreList={this.state.playerList} timer={this.state.timer} />
           <div className="row">
             <div className="col mx-auto">
               <div className="card card-signin my-5">

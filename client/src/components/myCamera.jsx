@@ -381,10 +381,11 @@ class MyCamera extends Component {
     let load_curr = this.imgArray[this.state.curr_img_index];
     return (
       <div>
+        <Scores scoreList={this.props.playerList} timer={this.props.timer} />
         <div
           style={{ position: "relative", top: "2px", left: "2px" }}
-          width="1010"
-          height="1010"
+          width="500"
+          height="500"
         >
           <video id="video" className="p-2" width="400" height="400" autoPlay />
         </div>
@@ -392,11 +393,11 @@ class MyCamera extends Component {
           id="picture"
           height="250"
           width="200"
-          style={{ position: "absolute", top: "1px", left: "300px" }}
+          style={{ position: "absolute", top: "1px", right: "2px" }}
           src={load_curr}
           alt="gesture"
         />
-        <h1 style={{ position: "absolute", top: "2px", left: "500px" }}>
+        <h1 style={{ position: "absolute", top: "2px", right: "200px" }}>
           {this.state.countDown}
         </h1>
       </div>
