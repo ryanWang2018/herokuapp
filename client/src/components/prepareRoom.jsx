@@ -6,6 +6,7 @@ import WaitingRoom from "./waitingRoom.jsx";
 import "./gameRoomsPage.css";
 import Cookies from "js-cookie";
 import "./score.css";
+import Scores from "./scores.jsx";
 
 const URL = route => `wss://c09facelook.herokuapp.com${route}`;
 // const URL = route => `ws://localhost:3000${route}`;
@@ -32,13 +33,6 @@ class PrepareRoom extends Component {
       return (
         <div className="container sub-body">
           <Scores scoreList={this.state.playerList} timer={this.state.timer} />
-          <div
-            style={{
-              height: "200px",
-              width: "200px",
-              backgroundColor: "black"
-            }}
-          />
           <div className="row">
             <div className="col mx-auto">
               <div className="card card-signin my-5">

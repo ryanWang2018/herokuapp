@@ -4,7 +4,6 @@ import Result from "./result.jsx";
 import EmojiBar from "./emojiBar.jsx";
 
 class GameBoard extends Component {
-
   render() {
     // const result = this.props.result;
     const scoreList = this.props.scoreList;
@@ -13,16 +12,21 @@ class GameBoard extends Component {
     const ws = this.props.ws;
     const result = this.props.result; // draw or winner's playerId
     return (
-
       <div className="container">
-        <div className="row">
-          <Scores scoreList={scoreList} timer={timer}></Scores>
+        <Result result={result} className="row" />
+        <div>
+          <EmojiBar
+            ws={ws}
+            emojiList={emojiList}
+            timer={timer}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh"
+            }}
+          />
         </div>
-        <Result result={result} className="row"></Result>
-        <div >
-          <EmojiBar ws={ws} emojiList={emojiList} timer={timer} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}></EmojiBar>
-        </div>
-
       </div>
     );
   }

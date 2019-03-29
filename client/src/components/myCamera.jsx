@@ -332,7 +332,7 @@ class MyCamera extends Component {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
         .getUserMedia({ video: true })
-        .then(function (stream) {
+        .then(function(stream) {
           //video.src = window.URL.createObjectURL(stream);
           video.srcObject = stream;
           video.play();
@@ -361,13 +361,18 @@ class MyCamera extends Component {
   }
 
   render() {
-
     let load_curr = this.imgArray[this.state.curr_img_index];
 
     return (
       <div className="d-flex flex-row">
-        <img id="picture" height="450" width="450" src={load_curr} alt="gesture" />
-        <video id="video" className="p-2" width="400" height="400" autoPlay />
+        <img
+          id="picture"
+          height="200"
+          width="200"
+          src={load_curr}
+          alt="gesture"
+        />
+        <video id="video" className="p-2" width="500" height="500" autoPlay />
       </div>
     );
   }
