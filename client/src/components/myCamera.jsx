@@ -385,6 +385,8 @@ class MyCamera extends Component {
     let load_curr = this.imgArray[this.state.curr_img_index];
     return (
       <div>
+        <video id="video" className="p-2" width="1000" height="1000" autoPlay />
+
         <img
           id="picture"
           height="150"
@@ -393,20 +395,9 @@ class MyCamera extends Component {
           src={load_curr}
           alt="gesture"
         />
-        <div className="container">
-          <div className="column">
-            <div className="mx-auto">
-              <h1>{this.state.countDown}</h1>
-            </div>
-            <video
-              id="video"
-              className="p-2"
-              width="700"
-              height="700"
-              autoPlay
-            />
-          </div>
-        </div>
+        <h1 style={{ position: "absolute", top: "2px", left: "200px" }}>
+          {this.state.countDown}
+        </h1>
       </div>
     );
   }
