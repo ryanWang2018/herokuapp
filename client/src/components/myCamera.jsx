@@ -386,7 +386,7 @@ class MyCamera extends Component {
     return (
       <div>
         <div
-          style={{ position: "absolute", top: "2px", left: "2px" }}
+          style={{ position: "relative", top: "2px", left: "2px" }}
           width="1010"
           height="1010"
         >
@@ -403,11 +403,11 @@ class MyCamera extends Component {
           id="picture"
           height="150"
           width="150"
-          style={{ position: "absolute", top: "2px", left: "2px" }}
+          style={{ position: "relative", top: "2px", left: "2px" }}
           src={load_curr}
           alt="gesture"
         />
-        <h1 style={{ position: "absolute", top: "2px", left: "200px" }}>
+        <h1 style={{ position: "relative", top: "2px", left: "200px" }}>
           {this.state.countDown}
         </h1>
       </div>
