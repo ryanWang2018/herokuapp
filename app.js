@@ -102,6 +102,7 @@ app.use(function(req, res, next) {
   console.log("HTTP request", username, req.method, req.url, req.body);
   next();
 });
+
 app.use(function(req, res, next) {
   req.room = "room" in req.session ? req.session.room : null;
   next();
@@ -125,9 +126,14 @@ router.post("/room/", isAuthenticated, function(req, res) {
   let users = [];
   Rooms.insertMany({ owner: owner, users: users }, function(err, insertedRoom) {
     if (err) return res.status(500).end("Failed creating new room");
-    return res.json(insertedRoom[0]);
+    Rooms.find({})
+      .count()
+      .exec(function(err, total) {
+        return res.json({ rooms, total });
+      });
   });
 });
+
 router.get("/rooms/:page/", function(req, res, next) {
   let pageId = req.params.page;
   Rooms.find({})
