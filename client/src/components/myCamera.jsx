@@ -124,7 +124,7 @@ class MyCamera extends Component {
     if (
       l_shoulder_elbow > 200 &&
       l_shoulder_elbow < 270 &&
-      l_elbow_hand > 270 &&
+      l_elbow_hand > 250 &&
       l_elbow_hand < 310 &&
       l_knee_foot > 240 &&
       l_knee_foot < 300 &&
@@ -132,7 +132,7 @@ class MyCamera extends Component {
       r_shoulder_elbow < 320 &&
       r_elbow_hand > 240 &&
       r_elbow_hand < 270 &&
-      r_buttocks_knee > 270 &&
+      r_buttocks_knee > 250 &&
       r_buttocks_knee < 330 &&
       r_knee_foot > 250 &&
       r_knee_foot < 300
@@ -166,7 +166,7 @@ class MyCamera extends Component {
       r_elbow_hand > 260 &&
       r_elbow_hand < 320 &&
       r_buttocks_knee > 240 &&
-      r_buttocks_knee < 275
+      r_buttocks_knee < 290
     ) {
       return true;
     }
