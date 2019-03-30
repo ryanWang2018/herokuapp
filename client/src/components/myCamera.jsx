@@ -239,7 +239,6 @@ class MyCamera extends Component {
     let dx = point.x - origin.x;
     let dy = origin.y - point.y;
     let degree;
-
     // at Q1;
     if (dx > 0.0 && dy >= 0.0) {
       if (dy === 0.0) {
@@ -313,17 +312,47 @@ class MyCamera extends Component {
       console.log("need full body");
       return false;
     } else {
+      let img_Array = [
+        "twoHandUp",
+        "dap",
+        "oneHandUp",
+        "twoHandDown",
+        "bothLeg",
+        "leftLeg",
+        "rightLeg"
+      ];
+
       let res = checkArray[curr_img](
         l_shoulder_elbow,
         l_elbow_hand,
         l_buttocks_knee,
         l_knee_foot,
         r_shoulder_elbow,
-
         r_elbow_hand,
         r_buttocks_knee,
         r_knee_foot
       );
+      console.log(img_Array[curr_img]);
+      console.log(
+        "lse=",
+        l_shoulder_elbow,
+        "leh=",
+        l_elbow_hand,
+        "lbk=",
+        l_buttocks_knee,
+        "lkf=",
+        l_knee_foot,
+        "rse=",
+        r_shoulder_elbow,
+
+        "reh=",
+        r_elbow_hand,
+        "rbk=",
+        r_buttocks_knee,
+        "rkf=",
+        r_knee_foot
+      );
+      console.log(res);
 
       if (res) {
         if (this.props.ws.readyState === WebSocket.OPEN) {
