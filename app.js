@@ -124,7 +124,7 @@ router.get("/rooms/", isAuthenticated, function(req, res, next) {
     });
 });
 
-var longpoll = require("express-longpoll")(router);
+var longpoll = require("express-longpoll")(app);
 longpoll.create("/api/rooms/longpolling/");
 process.setMaxListeners(0);
 
