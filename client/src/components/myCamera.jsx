@@ -95,16 +95,16 @@ class MyCamera extends Component {
     r_knee_foot
   ) => {
     if (
-      l_shoulder_elbow > 220 &&
-      l_shoulder_elbow < 270 &&
+      l_shoulder_elbow > 230 &&
+      l_shoulder_elbow < 280 &&
       l_buttocks_knee > 250 &&
-      l_buttocks_knee < 290 &&
+      l_buttocks_knee < 300 &&
       r_shoulder_elbow > 270 &&
-      r_shoulder_elbow < 320 &&
-      r_buttocks_knee > 300 &&
+      r_shoulder_elbow < 330 &&
+      r_buttocks_knee > 290 &&
       r_buttocks_knee < 360 &&
       r_knee_foot > 250 &&
-      r_knee_foot < 280
+      r_knee_foot < 300
     ) {
       return true;
     }
@@ -126,15 +126,15 @@ class MyCamera extends Component {
       l_shoulder_elbow < 270 &&
       l_elbow_hand > 270 &&
       l_elbow_hand < 310 &&
-      l_knee_foot > 250 &&
-      l_knee_foot < 340 &&
+      l_knee_foot > 240 &&
+      l_knee_foot < 300 &&
       r_shoulder_elbow > 270 &&
       r_shoulder_elbow < 320 &&
-      r_elbow_hand > 180 &&
-      r_elbow_hand < 250 &&
+      r_elbow_hand > 240 &&
+      r_elbow_hand < 270 &&
       r_buttocks_knee > 270 &&
       r_buttocks_knee < 330 &&
-      r_knee_foot > 260 &&
+      r_knee_foot > 250 &&
       r_knee_foot < 300
     ) {
       return true;
@@ -157,15 +157,15 @@ class MyCamera extends Component {
       l_shoulder_elbow < 270 &&
       l_elbow_hand > 200 &&
       l_elbow_hand < 270 &&
-      l_buttocks_knee > 230 &&
-      l_buttocks_knee < 270 &&
-      l_knee_foot > 270 &&
-      l_knee_foot < 300 &&
-      r_shoulder_elbow > 270 &&
+      l_buttocks_knee > 220 &&
+      l_buttocks_knee < 280 &&
+      l_knee_foot > 260 &&
+      l_knee_foot < 320 &&
+      r_shoulder_elbow > 260 &&
       r_shoulder_elbow < 320 &&
-      r_elbow_hand > 270 &&
+      r_elbow_hand > 260 &&
       r_elbow_hand < 320 &&
-      r_buttocks_knee > 250 &&
+      r_buttocks_knee > 240 &&
       r_buttocks_knee < 275
     ) {
       return true;
@@ -184,7 +184,7 @@ class MyCamera extends Component {
     r_knee_foot
   ) => {
     if (
-      l_shoulder_elbow > 120.0 &&
+      l_shoulder_elbow > 100.0 &&
       l_shoulder_elbow < 270.0 &&
       l_elbow_hand > 20.0 &&
       l_elbow_hand < 130.0 &&
@@ -353,7 +353,6 @@ class MyCamera extends Component {
         r_knee_foot
       );
       console.log(res);
-
       if (res) {
         if (this.props.ws.readyState === WebSocket.OPEN) {
           this.props.ws.send(
