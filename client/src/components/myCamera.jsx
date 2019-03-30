@@ -381,7 +381,7 @@ class MyCamera extends Component {
     let load_curr = this.imgArray[this.state.curr_img_index];
     return (
       <div>
-        <Scores scoreList={this.props.playerList} timer={this.props.timer} />
+        <Scores scoreList={this.props.scoreList} timer={this.props.timer} />
         <div
           style={{ position: "relative", top: "2px", left: "2px" }}
           width="500"

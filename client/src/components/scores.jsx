@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Timer from "./timer.jsx";
-import Score from "./score.jsx";
-
+import "./score.css";
 class Scores extends Component {
   constructor(props) {
     super(props);
