@@ -124,13 +124,26 @@ router.get("/rooms/", isAuthenticated, function(req, res, next) {
     });
 });
 
+var longpoll = require("express-longpoll")(app);
+longpoll.create("/api/rooms/longpolling/");
+process.setMaxListeners(0);
+
 // add room
-router.post("/room/", isAuthenticated, function(req, res) {
+router.post("/room/:pagenum/", isAuthenticated, function(req, res) {
+  let pageNum = req.param.pagenum;
   let owner = req.user._id; // id is the owner id
   let users = [];
   Rooms.insertMany({ owner: owner, users: users }, function(err, insertedRoom) {
     if (err) return res.status(500).end("Failed creating new room");
-    return res.json(insertedRoom[0]);
+    Rooms.find({})
+      .sort({ time: -1 })
+      .skip((pageId - 1) * 6)
+      .limit(6)
+      .exec(function(err, rooms) {
+        if (err) return res.status(500).end(err);
+        longpoll.publish("/api/rooms/longpolling/", rooms);
+        return res.json(insertedRoom[0]);
+      });
   });
 });
 
@@ -311,7 +324,13 @@ router.post("/room/:id/enter/", isAuthenticated, function(req, res, next) {
       function(err, result) {
         if (err) return res.status(500).end(err);
         req.session.room = room;
-        return res.json(room);
+        Rooms.find({})
+          .sort({ time: -1 })
+          .exec(function(err, rooms) {
+            if (err) return res.status(500).end(err);
+            longpoll.publish("/api/rooms/longpolling/", rooms);
+            return res.json(room);
+          });
       }
     );
   });
@@ -331,7 +350,13 @@ router.post("/room/:id/leave/", isAuthenticated, function(req, res, next) {
     if (room.users.length === 0) {
       Rooms.deleteOne({ _id: id }, function(err, deleted) {
         if (err) return res.status(500).end(500);
-        return res.json("room deleted");
+        Rooms.find({})
+          .sort({ time: -1 })
+          .exec(function(err, rooms) {
+            if (err) return res.status(500).end(err);
+            longpoll.publish("/api/rooms/longpolling/", rooms);
+            return res.json("room deleted");
+          });
       });
     } else {
       Rooms.updateOne(
@@ -339,7 +364,13 @@ router.post("/room/:id/leave/", isAuthenticated, function(req, res, next) {
         { users: room.users, owner: room.users[0] },
         function(err, result) {
           if (err) return res.status(500).end(err);
-          return res.json(room);
+          Rooms.find({})
+            .sort({ time: -1 })
+            .exec(function(err, rooms) {
+              if (err) return res.status(500).end(err);
+              longpoll.publish("/api/rooms/longpolling/", rooms);
+              return res.json(room);
+            });
         }
       );
     }
@@ -361,8 +392,6 @@ let connects = [];
 router.ws("/rooms/:roomId", function(ws, req) {
   // create roomConnection/add ws to existing roomConnection
   let roomConnection = connects.find(c => c.roomId === req.params.roomId);
-  let timeUpdater;
-  let timeOut;
 
   if (!roomConnection) {
     let roomState = { players: [], gameState: "", timeleft: 0, winners: [] };
@@ -395,7 +424,7 @@ router.ws("/rooms/:roomId", function(ws, req) {
         reason: "room is full"
       })
     );
-  } else if (roomConnection && roomConnection.roomState.gameState === "wait") {
+  } else {
     let newPlayer = {
       playerId: req.session.user._id,
       point: 0,
@@ -404,6 +433,7 @@ router.ws("/rooms/:roomId", function(ws, req) {
     roomConnection.roomState.players.push(newPlayer);
     roomConnection.connections.push(ws);
     roomConnection.roomState.gameState = "wait";
+    roomConnection.roomState.winners = [];
     roomConnection.connections.forEach(player => {
       player.send(
         JSON.stringify({
@@ -434,9 +464,22 @@ router.ws("/rooms/:roomId", function(ws, req) {
         );
         if (roomConnection.roomState.gameState === "gamming") {
           roomConnection.roomState.gameState = "end";
-          clearInterval(timeUpdater);
-          clearTimeout(timeOut);
+          roomConnection.roomState.players.forEach(p => {
+            p.isReady = false;
+          });
+          clearInterval(roomConnection.timeUpdater);
+          clearTimeout(roomConnection.timeOut);
           roomConnection.roomState.winners = roomConnection.roomState.players;
+          roomConnection.connections.forEach(client => {
+            client.send(
+              JSON.stringify({
+                type: "roomState",
+                from: "admin",
+                roomState: roomConnection.roomState
+              })
+            );
+          });
+        } else {
           roomConnection.connections.forEach(client => {
             client.send(
               JSON.stringify({
@@ -472,6 +515,7 @@ router.ws("/rooms/:roomId", function(ws, req) {
             p => p.playerId === req.session.user._id
           );
           p.isReady = true;
+          p.point = 0;
           // roomConnection.roomState.players.push(newPlayer);
         }
         let numOfReady = roomConnection.roomState.players.filter(p => p.isReady)
@@ -491,6 +535,7 @@ router.ws("/rooms/:roomId", function(ws, req) {
           // send start signal to all players in room
           roomConnection.roomState.gameState = "gamming";
           roomConnection.roomState.timeleft = 60;
+          roomConnection.roomState.winners = [];
           roomConnection.connections.forEach(player => {
             player.send(
               JSON.stringify({
@@ -501,7 +546,7 @@ router.ws("/rooms/:roomId", function(ws, req) {
             );
           });
           // update timer every sec
-          timeUpdater = setInterval(() => {
+          roomConnection.timeUpdater = setInterval(() => {
             roomConnection.roomState.timeleft =
               roomConnection.roomState.timeleft - 1;
 
@@ -516,9 +561,12 @@ router.ws("/rooms/:roomId", function(ws, req) {
             });
           }, 1000);
           // timeout
-          timeOut = setTimeout(() => {
-            clearInterval(timeUpdater);
+          roomConnection.timeOut = setTimeout(() => {
+            clearInterval(roomConnection.timeUpdater);
             roomConnection.roomState.gameState = "end";
+            roomConnection.roomState.players.forEach(p => {
+              p.isReady = false;
+            });
             let maxPoint = Math.max.apply(
               Math,
               roomConnection.roomState.players.map(function(o) {
@@ -538,7 +586,6 @@ router.ws("/rooms/:roomId", function(ws, req) {
                   roomState: roomConnection.roomState
                 })
               );
-              client.close();
             });
           }, 60999);
         } else {

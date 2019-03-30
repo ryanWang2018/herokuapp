@@ -71,10 +71,10 @@ class GameRooms extends Component {
       });
   };
 
-  handleAddRoom = () => {
+  handleAddRoom = curr_page => {
     //add the updated rooms into database
     api
-      .post("/room/", null)
+      .post("/room/" + curr_page + "/", null)
       .then(res => {
         //enter created room
         console.log(res);
@@ -232,7 +232,10 @@ class GameRooms extends Component {
           </button>
         </div>
 
-        <button onClick={this.handleAddRoom} className="btn btn-lg btn-danger">
+        <button
+          onClick={this.handleAddRoom(this.state.curr_page)}
+          className="btn btn-lg btn-danger"
+        >
           Create Room
         </button>
       </div>
