@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import Timer from "./timer.jsx";
 import "./score.css";
 class Scores extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     const scoreList = this.props.scoreList; // [{playerId: "", point:""}]
     const timer = this.props.timer; // {timeleft: 0}
