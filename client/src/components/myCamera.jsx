@@ -54,7 +54,7 @@ class MyCamera extends Component {
       r_shoulder_elbow > 30.0 &&
       r_shoulder_elbow < 100.0 &&
       r_elbow_hand > 40.0 &&
-      r_elbow_hand < 160.0
+      r_elbow_hand < 280
     ) {
       return true;
     }
@@ -127,7 +127,7 @@ class MyCamera extends Component {
       l_elbow_hand > 250 &&
       l_elbow_hand < 310 &&
       l_knee_foot > 240 &&
-      l_knee_foot < 300 &&
+      l_knee_foot < 320 &&
       r_shoulder_elbow > 270 &&
       r_shoulder_elbow < 320 &&
       r_elbow_hand > 240 &&
@@ -135,7 +135,7 @@ class MyCamera extends Component {
       r_buttocks_knee > 250 &&
       r_buttocks_knee < 330 &&
       r_knee_foot > 250 &&
-      r_knee_foot < 300
+      r_knee_foot < 320
     ) {
       return true;
     }
