@@ -233,7 +233,7 @@ class GameRooms extends Component {
         </div>
 
         <button
-          onClick={this.handleAddRoom(this.state.curr_page)}
+          onClick={() => this.handleAddRoom(this.state.curr_page)}
           className="btn btn-lg btn-danger"
         >
           Create Room
