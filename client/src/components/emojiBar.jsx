@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import MyCamera from "./myCamera.jsx";
 
 class EmojiBar extends Component {
-
-
   render() {
     let timer = this.props.timer;
     let ws = this.props.ws;
