@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import Scores from "./scores.jsx";
-import Result from "./result.jsx";
-import EmojiBar from "./emojiBar.jsx";
+import MyCamera from "./myCamera.jsx";
 
 class GameBoard extends Component {
   render() {
@@ -13,19 +11,8 @@ class GameBoard extends Component {
     const result = this.props.result; // draw or winner's playerId
     return (
       <div className="container">
-        <Result result={result} className="row" />
         <div>
-          <EmojiBar
-            ws={ws}
-            emojiList={emojiList}
-            timer={timer}
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100vh"
-            }}
-          />
+          <MyCamera ws={ws} scoreList={scoreList} timer={timer} />
         </div>
       </div>
     );
