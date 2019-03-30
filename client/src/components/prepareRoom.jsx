@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 import "./score.css";
 import Scores from "./scores.jsx";
 
-const URL = route => `wss://c09facelook.herokuapp.com${route}`;
+const URL = route => `wss://www.c09facelook.me${route}`;
 // const URL = route => `ws://localhost:3000${route}`;
 
 class PrepareRoom extends Component {
