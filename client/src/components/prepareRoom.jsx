@@ -117,10 +117,6 @@ class PrepareRoom extends Component {
       let message = JSON.parse(event.data);
 
       switch (message.type) {
-        case "stop":
-          console.log("recieve from server stop");
-          this.handleOnStop();
-          break;
         case "roomState":
           this.handleOnRoomState(message);
           break;
@@ -158,63 +154,27 @@ class PrepareRoom extends Component {
   };
   handleOnRoomState = message => {
     let roomState = message.roomState;
+    this.setCurrRoomState(roomState);
     if (roomState.gameState === "wait") {
-      let players = roomState.players;
-      this.setState({ playerList: players });
+      this.setState({ start: "" });
     } else if (roomState.gameState === "gamming") {
-      let timeleft = roomState.timeleft;
-      let players = roomState.players;
-      this.handleOnStart(timeleft, players);
-      console.log("start");
+      this.setState({ start: "start" });
     } else if (roomState.gameState === "end") {
-      let winners = roomState.winners;
-      console.log("handle on room state:  " + winners);
-      this.handleOnResult(winners);
-      console.log("game end");
+      this.setState({ start: "" });
     }
   };
 
-  handleOnResult = winners => {
-    console.log("handle on result winners: " + winners);
-    let result = winners.map(p => p.playerId);
-    result = result.length === 2 ? "draw" : result[0];
-    this.setState({ result });
-    console.log("after :" + this.state.result);
+  setCurrRoomState = roomState => {
+    let timer = { timeleft: roomState.timeleft };
+    this.setState({
+      playerList: roomState.players,
+      winners: roomState.winners,
+      timer: timer
+    });
   };
-  // this.setState({ start: "" });
-  // let result = (winners.length === 1) ? winners[0] : "draw";
-  // if (result !== "draw")
-  // switch (result) {
-  //     case "win":
-  //         console.log("handle result win");
-  //         this.setState({ result: "win" });
-  //         this.setState({ start: "" });
-  //         break;
-  //     case "lose":
-  //         console.log("handle result lose");
-  //         this.setState({ result: "lose" });
-  //         this.setState({ start: "" });
-  //         break;
-  //     case "draw":
-  //         console.log("handle result draw");
-  //         this.setState({ result: "draw" });
-  //         this.setState({ start: "" });
-  //         break;
-  //     default:
-  //         console.log("handle result: unexpected result.")
-  //         break;
-  // }
 
   handleOnError = err => {
     this.setState({ back: true });
-  };
-
-  handleOnStart = (timeleft, players) => {
-    let timer = { timeleft: timeleft };
-    let playerList = players;
-    this.setState({ timer });
-    this.setState({ playerList });
-    this.setState({ start: "start" });
   };
 }
 

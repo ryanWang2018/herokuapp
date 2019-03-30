@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import "./waitingRoom.css";
 import Cookies from "js-cookie";
+import Result from "./result.jsx";
+
 class WaitingRoom extends Component {
   constructor(props) {
     super(props);
@@ -10,6 +12,7 @@ class WaitingRoom extends Component {
   }
 
   render() {
+    let result = this.props.result;
     let playerList = this.props.playerList; //{ playerId: req.session.user._id, point: 0, isReady: false}
     let user0 = playerList[0];
     let user1 = playerList[1];
@@ -24,33 +27,53 @@ class WaitingRoom extends Component {
     } else if (user1 && myUserName === user1.playerId && user0) {
       opponentUserName = user0.playerId;
     }
+
     return (
       <div>
         <div className="row justify-content-md-center  text-center">
           <div className="col-lg-3 col-md-4 col-6">
-
-            <img className="img-fluid img-thumbnail" src="https://source.unsplash.com/pWkk7iiCoDM/400x300" alt="" />
-            <p>Player: {(user0) ? user0.playerId : ""}</p>
-            {(user0 && user0.isReady) ? <img src="/media/ready.png" alt="ready" /> : <img src="/media/not_ready.png" alt="not ready" />}
-
-
-
+            <img
+              className="img-fluid img-thumbnail"
+              src="https://source.unsplash.com/pWkk7iiCoDM/400x300"
+              alt=""
+            />
+            <p>Player: {user0 ? user0.playerId : ""}</p>
+            {result && user0 ? (
+              <Result result={result} myUserName={user0.playerId} />
+            ) : (
+              ""
+            )}
+            {user0 && user0.isReady ? (
+              <img src="/media/ready.png" alt="ready" />
+            ) : (
+              <img src="/media/not_ready.png" alt="not ready" />
+            )}
           </div>
-          <div className="col-md-auto">
-            V.S.
-          </div>
+          <div className="col-md-auto">V.S.</div>
           <div className="col-lg-3 col-md-4 col-6">
-
-            <img className="img-fluid img-thumbnail" src="https://source.unsplash.com/aob0ukAYfuI/400x300" alt="" />
-            <p>
-              Player: {user1 ? (user1.playerId) : ""}
-            </p>
-            {(user1 && user1.isReady) ? <img src="/media/ready.png" alt="ready" /> : <img src="/media/not_ready.png" alt="not ready" />}
+            <img
+              className="img-fluid img-thumbnail"
+              src="https://source.unsplash.com/aob0ukAYfuI/400x300"
+              alt=""
+            />
+            <p>Player: {user1 ? user1.playerId : ""}</p>
+            {result && user1 ? (
+              <Result result={result} myUserName={user1.playerId} />
+            ) : (
+              ""
+            )}
+            {user1 && user1.isReady ? (
+              <img src="/media/ready.png" alt="ready" />
+            ) : (
+              <img src="/media/not_ready.png" alt="not ready" />
+            )}
           </div>
         </div>
 
         <div className="row justify-content-md-end  text-center">
-          <button className="button-r button5" onClick={this.sendReady}>Ready</button>
+          <button className="button-r button5" onClick={this.sendReady}>
+            Ready
+          </button>
         </div>
 
         <div className="row justify-content-md-center text-center chat-t">
@@ -58,67 +81,69 @@ class WaitingRoom extends Component {
             <div className="card-w">
               <div className="card-body msg_card_body">
                 {this.props.chatContent.map(chat =>
-                  (chat.from === opponentUserName)
-                    ?
+                  chat.from === opponentUserName ? (
                     <div className="d-flex justify-content-start mb-4">
-                      <div className="msg_cotainer">
-                        {chat.chatContent}
-                      </div>
+                      <div className="msg_cotainer">{chat.chatContent}</div>
                     </div>
-                    :
+                  ) : (
                     <div className="d-flex justify-content-end mb-4">
                       <div className="msg_cotainer_send">
                         {chat.chatContent}
                       </div>
-                    </div>)
-                }
+                    </div>
+                  )
+                )}
               </div>
               <div className="card-footer">
                 <div className="input-group">
-                  <textarea name=""
+                  <textarea
+                    name=""
                     type="text"
                     value={this.state.chatContent}
                     onChange={this.handleOnChange}
                     className="form-control type_msg"
-                    placeholder="Type your message...">
-                  </textarea>
+                    placeholder="Type your message..."
+                  />
                   <div className="input-group-append">
-                    <button className="send_btn" onClick={this.sendChatContent}>send</button>
+                    <button className="send_btn" onClick={this.sendChatContent}>
+                      send
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
-
         </div>
-
-      </div >
+      </div>
     );
   }
   sendReady = () => {
-    this.props.ws.send(JSON.stringify({
-      type: 'ready',
-      from: Cookies.get("username"),
-      roomId: this.props.roomId
-    }));
-  }
+    this.props.ws.send(
+      JSON.stringify({
+        type: "ready",
+        from: Cookies.get("username"),
+        roomId: this.props.roomId
+      })
+    );
+  };
 
-  sendChatContent = (event) => {
+  sendChatContent = event => {
     event.preventDefault();
 
-    this.props.ws.send(JSON.stringify({
-      type: 'chat',
-      from: Cookies.get("username"),
-      content: this.state.chatContent,
-      roomId: this.props.roomId
-    }));
-  }
+    this.props.ws.send(
+      JSON.stringify({
+        type: "chat",
+        from: Cookies.get("username"),
+        content: this.state.chatContent,
+        roomId: this.props.roomId
+      })
+    );
+  };
 
-  handleOnChange = (e) => {
+  handleOnChange = e => {
     let chatContent = e.target.value;
     this.setState({ chatContent });
-  }
+  };
 }
 
 export default WaitingRoom;

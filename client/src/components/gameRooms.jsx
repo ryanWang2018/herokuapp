@@ -19,6 +19,19 @@ class GameRooms extends Component {
     };
   }
 
+  handlerGetRoomsLongPolling() {
+    api
+      .get("/rooms/longpolling/", null)
+      .then(res => {
+        let rooms = res.data;
+        this.setState({ rooms });
+        this.handlerGetRoomsLongPolling();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   getNextPage = () => {
     let curr_rooms = this.state.rooms;
     let lastroom = curr_rooms[curr_rooms.length - 1];
@@ -129,7 +142,7 @@ class GameRooms extends Component {
 
   componentDidMount() {
     this.handlerGetRooms();
-    this.interval = setInterval(() => this.handlerGetRooms(), 4000);
+    this.handlerGetRoomsLongPolling();
   }
   // clean up data before something is removed from DOM.
   componentWillUnmount() {
