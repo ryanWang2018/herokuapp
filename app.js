@@ -137,7 +137,7 @@ router.post("/room/:pagenum/", isAuthenticated, function(req, res) {
     if (err) return res.status(500).end("Failed creating new room");
     Rooms.find({})
       .sort({ time: -1 })
-      .skip((pageId - 1) * 6)
+      .skip((pageNum - 1) * 6)
       .limit(6)
       .exec(function(err, rooms) {
         if (err) return res.status(500).end(err);
