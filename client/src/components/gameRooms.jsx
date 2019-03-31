@@ -24,6 +24,10 @@ class GameRooms extends Component {
       .get("/rooms/longpolling/")
       .then(res => {
         let rooms = res.data;
+        let new_rooms = rooms.slice(
+          (this.state.curr_page - 1) * 6,
+          (this.state.curr_page - 1) * 6 + 6
+        );
         this.setState({ rooms });
         this.handlerGetRoomsLongPolling();
       })
@@ -73,9 +77,9 @@ class GameRooms extends Component {
 
   handleAddRoom = () => {
     //add the updated rooms into database
-    let curr_page = this.state.curr_page;
+
     api
-      .post("/room/" + { curr_page } + "/", null)
+      .post("/room/", null)
       .then(res => {
         //enter created room
         console.log(res);
@@ -127,6 +131,7 @@ class GameRooms extends Component {
   };
 
   enterRoom = roomId => {
+    let curr_page = this.state.curr_page;
     api
       .post("/room/" + roomId + "/enter/")
       .then(res => {

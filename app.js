@@ -125,26 +125,31 @@ var longpoll = require("express-longpoll")(app);
 longpoll.create("/api/rooms/longpolling/");
 process.setMaxListeners(0);
 
-function pageHelp(pageNum) {
-  Rooms.find({})
-    .sort({ time: -1 })
-    .skip((pageNum - 1) * 6)
-    .limit(6)
-    .exec(function(err, rooms) {
-      if (err) return res.status(500).end(err);
-      console.log(rooms);
-      longpoll.publish("/api/rooms/longpolling/", rooms);
-    });
-}
+// function pageHelp(pageNum) {
+//   Rooms.find({})
+//     .sort({ time: -1 })
+//     .skip((pageNum - 1) * 6)
+//     .limit(6)
+//     .exec(function(err, rooms) {
+//       if (err) return res.status(500).end(err);
+//       console.log(rooms);
+//       longpoll.publish("/api/rooms/longpolling/", rooms);
+//     });
+// }
 // add room
-router.post("/room/:pagenum/", isAuthenticated, function(req, res) {
-  let pageNum = req.param.pagenum;
+router.post("/room/", isAuthenticated, function(req, res) {
+  //let pageNum = req.param.pagenum;
   let owner = req.user._id; // id is the owner id
   let users = [];
   Rooms.insertMany({ owner: owner, users: users }, function(err, insertedRoom) {
     if (err) return res.status(500).end("Failed creating new room");
-    pageHelp(pageNum);
-    return res.json(insertedRoom[0]);
+    Rooms.find({})
+      .sort({ time: -1 })
+      .exec(function(err, rooms) {
+        if (err) return res.status(500).end(err);
+        longpoll.publish("/api/rooms/longpolling/", rooms);
+        return res.json(insertedRoom[0]);
+      });
   });
 });
 
@@ -309,13 +314,9 @@ router.get("/user", function(req, res, next) {
 });
 
 // //enter room
-router.post("/room/:id/enter/:pageNum/", isAuthenticated, function(
-  req,
-  res,
-  next
-) {
+router.post("/room/:id/enter/", isAuthenticated, function(req, res, next) {
   let id = req.params.id;
-  let pageNum = req.params.pageNum;
+  //let pageNum = req.params.pageNum;
   Rooms.findOne({ _id: id }, function(err, room) {
     if (err) return res.status(500).end(err);
     if (!room) return res.status(401).end("We do not find the match room.");
@@ -329,21 +330,22 @@ router.post("/room/:id/enter/:pageNum/", isAuthenticated, function(
       function(err, result) {
         if (err) return res.status(500).end(err);
         req.session.room = room;
-        pageHelp(pageNum);
-        return res.json(room);
+        Rooms.find({})
+          .sort({ time: -1 })
+          .exec(function(err, rooms) {
+            if (err) return res.status(500).end(err);
+            longpoll.publish("/api/rooms/longpolling/", rooms);
+            return res.json(room);
+          });
       }
     );
   });
 });
 
 //leave room
-router.post("/room/:id/leave/:pageNum", isAuthenticated, function(
-  req,
-  res,
-  next
-) {
+router.post("/room/:id/leave/", isAuthenticated, function(req, res, next) {
   let id = req.params.id;
-  let pageNum = req.params.pageNum;
+
   console.log("leave room ", id);
   Rooms.findOne({ _id: id }, function(err, room) {
     if (err) return res.status(500).end(err);
@@ -355,9 +357,13 @@ router.post("/room/:id/leave/:pageNum", isAuthenticated, function(
     if (room.users.length === 0) {
       Rooms.deleteOne({ _id: id }, function(err, deleted) {
         if (err) return res.status(500).end(500);
-
-        pageHelp(pageNum);
-        return res.json("room deleted");
+        Rooms.find({})
+          .sort({ time: -1 })
+          .exec(function(err, rooms) {
+            if (err) return res.status(500).end(err);
+            longpoll.publish("/api/rooms/longpolling/", rooms);
+            return res.json("room deleted");
+          });
       });
     } else {
       Rooms.updateOne(
@@ -365,8 +371,13 @@ router.post("/room/:id/leave/:pageNum", isAuthenticated, function(
         { users: room.users, owner: room.users[0] },
         function(err, result) {
           if (err) return res.status(500).end(err);
-          pageHelp(pageNum);
-          return res.json(room);
+          Rooms.find({})
+            .sort({ time: -1 })
+            .exec(function(err, rooms) {
+              if (err) return res.status(500).end(err);
+              longpoll.publish("/api/rooms/longpolling/", rooms);
+              return res.json(room);
+            });
         }
       );
     }
