@@ -218,7 +218,7 @@ var checkUseremail = function(req, res, next) {
     return res.status(400).end("bad input");
   next();
 };
-var checkUserName = function(req, res, next) {
+var checkUserInputName = function(req, res, next) {
   if (
     !validator.isAlphanumeric(req.body.username) ||
     !validator.isAlphanumeric(req.body.first_name) ||
@@ -227,7 +227,7 @@ var checkUserName = function(req, res, next) {
     return res.status(400).end("bad input");
   next();
 };
-router.post("/register", checkUserName, checkUseremail, function(
+router.post("/register", checkUserInputName, checkUseremail, function(
   req,
   res,
   next
