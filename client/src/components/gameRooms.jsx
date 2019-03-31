@@ -73,7 +73,7 @@ class GameRooms extends Component {
 
   handleAddRoom = () => {
     //add the updated rooms into database
-    let curr_page = this.status.curr_page;
+    let curr_page = this.state.curr_page;
     api
       .post("/room/" + { curr_page } + "/", null)
       .then(res => {
