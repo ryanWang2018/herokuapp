@@ -142,6 +142,7 @@ router.post("/room/:pagenum/", isAuthenticated, function(req, res) {
       .limit(6)
       .exec(function(err, rooms) {
         if (err) return res.status(500).end(err);
+        console.log(rooms);
         longpoll.publish("/api/rooms/longpolling/", rooms);
         return res.json(insertedRoom[0]);
       });

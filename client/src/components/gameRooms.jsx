@@ -21,7 +21,7 @@ class GameRooms extends Component {
 
   handlerGetRoomsLongPolling() {
     api
-      .get("/rooms/longpolling/", null)
+      .get("/rooms/longpolling/")
       .then(res => {
         let rooms = res.data;
         this.setState({ rooms });
@@ -71,10 +71,11 @@ class GameRooms extends Component {
       });
   };
 
-  handleAddRoom = curr_page => {
+  handleAddRoom = () => {
     //add the updated rooms into database
+    let curr_page = this.status.curr_page;
     api
-      .post("/room/" + curr_page + "/", null)
+      .post("/room/" + { curr_page } + "/", null)
       .then(res => {
         //enter created room
         console.log(res);
@@ -232,10 +233,7 @@ class GameRooms extends Component {
           </button>
         </div>
 
-        <button
-          onClick={() => this.handleAddRoom(this.state.curr_page)}
-          className="btn btn-lg btn-danger"
-        >
+        <button onClick={this.handleAddRoom} className="btn btn-lg btn-danger">
           Create Room
         </button>
       </div>
