@@ -91,7 +91,7 @@ class GameRooms extends Component {
 
   handlerGetRooms() {
     api
-      .get("/rooms/", null)
+      .get("/rooms/")
       .then(res => {
         //console.log(res);
         let rooms = res.data.rooms;

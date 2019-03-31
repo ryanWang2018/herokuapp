@@ -110,6 +110,7 @@ app.use(function(req, res, next) {
 
 router.get("/rooms/", isAuthenticated, function(req, res, next) {
   // find the last room in the DB.
+
   Rooms.find({})
     .sort({ time: -1 })
     .limit(6)

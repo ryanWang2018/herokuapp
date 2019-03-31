@@ -31,12 +31,12 @@ class LoginForm extends Component {
   success = res => {
     let name = res.profileObj.name;
     console.log(name);
-    this.setState({ isAuth: true });
 
     api
       .post("/GoogleSignin/", { name })
       .then(res => {
         console.log(res.data);
+        this.setState({ isAuth: true });
       })
       .catch(err => {
         console.log(err);
