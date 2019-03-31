@@ -28,7 +28,7 @@ class GameRooms extends Component {
           (this.state.curr_page - 1) * 6,
           (this.state.curr_page - 1) * 6 + 6
         );
-        this.setState({ rooms });
+        this.setState({ new_rooms });
         this.handlerGetRoomsLongPolling();
       })
       .catch(err => {
