@@ -48,7 +48,8 @@ function generateHash(password, salt) {
 const sessionParser = session({
   secret: "please change this secret",
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { httpOnly: true, sameSite: ture }
 });
 
 app.use(sessionParser);
@@ -212,7 +213,25 @@ router.delete("/room/:id/", isAuthenticated, function(req, res, next) {
   });
 });
 
-router.post("/register", function(req, res, next) {
+var checkUseremail = function(req, res, next) {
+  if (!validator.isEmail(req.body.email))
+    return res.status(400).end("bad input");
+  next();
+};
+var checkUserName = function(req, res, next) {
+  if (
+    !validator.isAlphanumeric(req.body.username) ||
+    !validator.isAlphanumeric(req.body.first_name) ||
+    !validator.isAlphanumeric(req.body.last_name)
+  )
+    return res.status(400).end("bad input");
+  next();
+};
+router.post("/register", checkUserName, checkUseremail, function(
+  req,
+  res,
+  next
+) {
   if (!("username" in req.body))
     return res.status(400).end("username is missing");
   if (!("password" in req.body))
@@ -253,7 +272,12 @@ router.post("/register", function(req, res, next) {
   });
 });
 
-router.post("/signin/", function(req, res, next) {
+var checkUsername = function(req, res, next) {
+  if (!validator.isAlphanumeric(req.body.username))
+    return res.status(400).end("bad input");
+  next();
+};
+router.post("/signin/", checkUsername, function(req, res, next) {
   let username = req.body.username;
   let password = req.body.password;
 
