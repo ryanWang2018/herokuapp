@@ -29,7 +29,6 @@ class GameRooms extends Component {
           (this.state.curr_page - 1) * 6 + 6
         );
         this.setState({ rooms: new_rooms });
-        this.handlerGetRoomsLongPolling();
       })
       .catch(err => {
         console.log(err);
@@ -197,6 +196,7 @@ class GameRooms extends Component {
   render() {
     if (this.state.inRoom)
       return <Redirect to={"/api/rooms/" + this.state.inRoom} />;
+    this.handlerGetRoomsLongPolling();
     return (
       <div>
         <a
