@@ -10,8 +10,8 @@ class GameRoom extends Component {
 
   render() {
     let str_player = "";
-    for (i = 0; i < this.props.room.users.length; i++) {
-      str_player = this.props.room.users[i] + "&&";
+    for (let i = 0; i < this.props.room.users.length; i++) {
+      str_player = this.props.room.users[i] + " and ";
     }
     return (
       <div
