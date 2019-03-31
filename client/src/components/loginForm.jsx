@@ -3,6 +3,7 @@ import api from "./api.js";
 import ErrorMessage from "./errorMessage.jsx";
 import { Redirect } from "react-router";
 import "./loginPage.css";
+import GoogleLogin from "react-google-login";
 const client_id = "google-sign-in-button";
 class LoginForm extends Component {
   constructor(props) {
@@ -16,19 +17,20 @@ class LoginForm extends Component {
       isAuth: false
     };
     this.handleOnChanges = this.handleOnChanges.bind(this);
-    this.onSuccess = this.onSuccess.bind(this);
+    //this.onSuccess = this.onSuccess.bind(this);
   }
 
   componentDidMount() {
-    window.gapi.signin2.render(client_id, {
-      width: "auto",
-      height: 40,
-      onsuccess: this.onSuccess
-    });
+    // window.gapi.signin2.render(client_id, {
+    //   width: "auto",
+    //   height: 40,
+    //   onsuccess: this.onSuccess
+    // });
   }
-  onSuccess(googleUser) {
-    const profile = googleUser.getBasicProfile();
-    let name = profile.getName();
+
+  success = res => {
+    let name = res.profileObj.name;
+    console.log(name);
     this.setState({ isAuth: true });
 
     api
@@ -39,7 +41,12 @@ class LoginForm extends Component {
       .catch(err => {
         console.log(err);
       });
-  }
+  };
+
+  failure = res => {
+    console.log("sign in failed");
+    this.setState({ isAuth: false });
+  };
 
   handleOnChanges(event) {
     const value =
@@ -111,7 +118,12 @@ class LoginForm extends Component {
                     <hr className="my-4" />
                   </div>
                 </form>
-                <button id={client_id} className="btn btn-lg btn-block" />
+                <GoogleLogin
+                  clientId="569317549016-ruc7mrn11uaagrirmjka8mv874vqv0sr.apps.googleusercontent.com"
+                  buttonText="Google Login"
+                  onSuccess={this.success}
+                  onFailure={this.failure}
+                />
               </div>
             </div>
           </div>
