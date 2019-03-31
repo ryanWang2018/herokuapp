@@ -49,7 +49,7 @@ const sessionParser = session({
   secret: "please change this secret",
   resave: false,
   saveUninitialized: true,
-  cookie: { httpOnly: true, sameSite: ture }
+  cookie: { httpOnly: true, sameSite: true }
 });
 
 app.use(sessionParser);
