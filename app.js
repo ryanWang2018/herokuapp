@@ -122,7 +122,7 @@ router.get("/rooms/", isAuthenticated, function(req, res, next) {
     });
 });
 
-var longpoll = require("express-longpoll")(app);
+let longpoll = require("express-longpoll")(app);
 longpoll.create("/api/rooms/longpolling/");
 process.setMaxListeners(0);
 
@@ -213,12 +213,12 @@ router.delete("/room/:id/", isAuthenticated, function(req, res, next) {
   });
 });
 
-var checkUseremail = function(req, res, next) {
+let checkUseremail = function(req, res, next) {
   if (!validator.isEmail(req.body.email))
     return res.status(400).end("bad input");
   next();
 };
-var checkUserInputName = function(req, res, next) {
+let checkUserInputName = function(req, res, next) {
   if (
     !validator.isAlphanumeric(req.body.username) ||
     !validator.isAlphanumeric(req.body.first_name) ||
@@ -236,13 +236,13 @@ router.post("/register", checkUserInputName, checkUseremail, function(
     return res.status(400).end("username is missing");
   if (!("password" in req.body))
     return res.status(400).end("password is missing");
-  var username = req.body.username;
-  var password = req.body.password;
-  var email = req.body.email;
-  var first_name = req.body.first_name;
-  var last_name = req.body.last_name;
-  var salt = generateSalt();
-  var hash = generateHash(password, salt);
+  let username = req.body.username;
+  let password = req.body.password;
+  let email = req.body.email;
+  let first_name = req.body.first_name;
+  let last_name = req.body.last_name;
+  let salt = generateSalt();
+  let hash = generateHash(password, salt);
 
   // insert new user into the database
   User.findOne({ _id: username }, function(err, user) {
@@ -272,11 +272,6 @@ router.post("/register", checkUserInputName, checkUseremail, function(
   });
 });
 
-var checkUsername = function(req, res, next) {
-  if (!validator.isAlphanumeric(req.body.username))
-    return res.status(400).end("bad input");
-  next();
-};
 router.post("/signin/", checkUsername, function(req, res, next) {
   let username = req.body.username;
   let password = req.body.password;
