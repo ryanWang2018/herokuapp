@@ -20,14 +20,19 @@ class GameRooms extends Component {
   }
 
   handlerGetRoomsLongPolling() {
-    api.get("/rooms/longpolling/").then(res => {
-      let rooms = res.data;
-      let new_rooms = rooms.slice(
-        (this.state.curr_page - 1) * 6,
-        (this.state.curr_page - 1) * 6 + 6
-      );
-      this.setState({ rooms: new_rooms });
-    });
+    api.defaults.timeout = 0;
+    api
+      .get("/rooms/longpolling/", {
+        timeout: 0
+      })
+      .then(res => {
+        let rooms = res.data;
+        let new_rooms = rooms.slice(
+          (this.state.curr_page - 1) * 6,
+          (this.state.curr_page - 1) * 6 + 6
+        );
+        this.setState({ rooms: new_rooms });
+      });
   }
 
   getNextPage = () => {

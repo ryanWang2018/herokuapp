@@ -9,13 +9,6 @@ class GameRoom extends Component {
   //   };
 
   render() {
-    let str_player = "";
-    for (let i = 0; i < this.props.room.users.length; i++) {
-      str_player += this.props.room.users[i];
-      if (i + 1 < this.props.room.users.length) {
-        str_player += " and ";
-      }
-    }
     return (
       <div
         className="col-lg-6 mbr-col-md-10"
@@ -30,7 +23,7 @@ class GameRoom extends Component {
               Room: <span>{this.props.room.owner}</span>
             </h2>
             <p className="mbr-fonts-style text1 mbr-text display-6">
-              Players: {str_player}
+              Players: {this.props.room.users}
             </p>
           </div>
         </div>
